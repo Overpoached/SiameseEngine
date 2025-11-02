@@ -4,12 +4,12 @@
 
 namespace sengine
 {
-	class Logger
-	{
-	public:
-		//if a file name is provided, a file write sink will be created
-		Logger(const std::string& name, const std::string& filename = "");
-		~Logger() = default;
+    class Logger
+    {
+    public:
+        //if a file name is provided, a file write sink will be created
+        Logger(const std::string& name, const std::string& filename = "");
+        ~Logger() = default;
 
         template <typename... Args>
         void Trace(spdlog::format_string_t<Args...> fmt, Args &&...args) {
@@ -41,7 +41,20 @@ namespace sengine
             m_logger->log(spdlog::level::critical, fmt, std::forward<Args>(args)...);
         }
 
-	private:
-		std::shared_ptr<spdlog::logger> m_logger;
-	};
+    private:
+        std::shared_ptr<spdlog::logger> m_logger;
+    };
+
+    class LoggerService
+    {
+    public:
+        static void Register(std::shared_ptr<Logger> logger) noexcept { s_instance = logger; }
+        static bool IsRegistered() { return s_instance != nullptr; }
+        static std::shared_ptr<Logger> Get() noexcept { return s_instance; }
+
+    private:
+        static inline std::shared_ptr<Logger> s_instance = nullptr;
+
+
+    };
 }

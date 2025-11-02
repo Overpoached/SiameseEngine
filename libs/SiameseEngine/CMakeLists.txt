@@ -21,8 +21,12 @@ target_include_directories(SiameseEngine
 )
 
 #link with other libraries
-target_link_libraries(SiameseEngine PUBLIC spdlog::spdlog)
-target_link_libraries(SiameseEngine PUBLIC inicpp)
+target_link_libraries(SiameseEngine PUBLIC
+    spdlog::spdlog
+    inicpp
+)
+target_link_libraries(SiameseEngine PRIVATE
+    DbgHelp)
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/include PREFIX "Header Files" FILES ${INCLUDE_FILES})
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src PREFIX "Source Files" FILES ${SRC_FILES})
