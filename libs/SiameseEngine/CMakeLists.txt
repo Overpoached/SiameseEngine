@@ -1,17 +1,17 @@
 cmake_minimum_required(VERSION 4.2)
 project(SiameseEngine LANGUAGES CXX)
 
-#create the library
-add_library(SiameseEngine)
-
 #get the source files in the folder
 file(GLOB_RECURSE INCLUDE_FILES CONFIGURE_DEPENDS "include/*.h")
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS "src/*.h" "src/*.cpp")
 
+#create the library
+add_library(SiameseEngine)
+
 #add the files to the project
 target_sources(SiameseEngine
-    PRIVATE ${SRC_FILES}
     PUBLIC ${INCLUDE_FILES}
+    PRIVATE ${SRC_FILES}
 )
 
 #include dir
@@ -20,11 +20,18 @@ target_include_directories(SiameseEngine
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-add_source_group_by_folder("${INCLUDE_FILES}" "${CMAKE_CURRENT_SOURCE_DIR}/include")
-add_source_group_by_folder("${SRC_FILES}" "${CMAKE_CURRENT_SOURCE_DIR}/src")
+#link with other libraries
+target_link_libraries(SiameseEngine PUBLIC spdlog::spdlog)
+target_link_libraries(SiameseEngine PUBLIC inicpp)
+
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/include PREFIX "Header Files" FILES ${INCLUDE_FILES})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src PREFIX "Source Files" FILES ${SRC_FILES})
 
 #cpp std
 target_compile_features(SiameseEngine PUBLIC cxx_std_20)
+if(MSVC)
+    add_compile_options(/MP)
+endif()
 
 #pch
 target_precompile_headers(SiameseEngine PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/sepch.h")

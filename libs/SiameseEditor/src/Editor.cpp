@@ -1,17 +1,6 @@
 #include <EntryPoint.h>
 
-#include <Application.h>
-
-namespace seditor
-{
-	class Editor : public sengine::Application
-	{
-	public:
-
-	private:
-
-	};
-}
+#include <Editor.h>
 
 seditor::Editor::Application* sengine::CreateApplication()
 {

@@ -2,12 +2,24 @@
 
 namespace sengine
 {
+    class Logger;
+    struct ApplicationConfig
+    {
+        std::string logFileName;
+    };
     class Application
     {
     public:
+        static inline const char* CONFIG_PATH = "sengine.ini";
+
         virtual void Init();
         virtual void Run();
         virtual void Release();
+
+        void LoadConfig(const std::string& filename);
+
+        ApplicationConfig m_config;
+        std::shared_ptr<Logger> m_engineLogger;
 
     private:
     };
