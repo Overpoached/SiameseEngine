@@ -31,5 +31,7 @@ add_subdirectory(external/spdlog)
 set_target_properties(spdlog PROPERTIES FOLDER "external")
 add_subdirectory(external/inifile_cpp)
 set_target_properties(inicpp PROPERTIES FOLDER "external")
+add_subdirectory(external/glfw)
+set_target_properties(glfw PROPERTIES FOLDER "external")
 
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT SiameseEditor)
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT SiameseRenderer)

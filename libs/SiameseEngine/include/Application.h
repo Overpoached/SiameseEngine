@@ -6,6 +6,8 @@ namespace sengine
     struct ApplicationConfig
     {
         std::string logFileName;
+        double targetFrameRate;
+        double targetFrameTime;
     };
     class Application
     {

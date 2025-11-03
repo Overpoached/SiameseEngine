@@ -22,7 +22,6 @@ void sengine::Application::Init()
 
 void sengine::Application::Run()
 {
-	while (1);
 }
 
 void sengine::Application::Release()
@@ -35,4 +34,6 @@ void sengine::Application::LoadConfig(const std::string& filename)
 	configFile.load("data/configs/" + filename);
 
 	m_config.logFileName = configFile["sengine"]["logFileName"].as<std::string>();
+	m_config.targetFrameRate = configFile["sengine"]["targetFrameRate"].as<double>();
+	m_config.targetFrameTime = 1.0 / m_config.targetFrameRate;
 }

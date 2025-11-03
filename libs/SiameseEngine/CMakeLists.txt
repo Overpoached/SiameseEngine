@@ -38,4 +38,4 @@ if(MSVC)
 endif()
 
 #pch
-target_precompile_headers(SiameseEngine PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/sepch.h")
+target_precompile_headers(SiameseEngine PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/sepch.h")
