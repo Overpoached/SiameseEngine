@@ -4,24 +4,90 @@
 
 #include <GLFW/glfw3.h>
 
-sshared::Window::~Window()
+#include "core/Log.h"
+#include "input/InputManager.h"
+#include "core/Clock.h"
+
+using namespace sshared;
+
+static std::shared_ptr<sengine::InputManager> s_inputManagerPtr = nullptr;
+static std::shared_ptr<sengine::Clock> s_clock = nullptr;
+
+Window::~Window()
 {
     if (m_window)
         glfwDestroyWindow(m_window);
     glfwTerminate();
 }
 
-void sshared::Window::PollEvents() const
+void Window::PollEvents() const
 {
     glfwPollEvents();
 }
 
-bool sshared::Window::ShouldClose() const
+void Window::SetUpGlfwInputCallbacks(std::shared_ptr<sengine::InputManager> inputManagerPtr, std::shared_ptr<sengine::Clock> clockPtr)
+{
+    if (!m_window)
+    {
+        SENGINE_ERROR("Tried to add glfw callbacks before the glfw window has been created!");
+        return;
+    }
+    if (s_inputManagerPtr)
+    {
+        SENGINE_ERROR("glfw callbacks have already been added in this runtime!");
+        return;
+    }
+    s_inputManagerPtr = inputManagerPtr;
+    s_clock = clockPtr;
+    glfwSetKeyCallback(m_window, [](GLFWwindow*, int key, int, int action, int)
+        {
+            if (s_inputManagerPtr)
+            {
+                sengine::KeyState actionImpl{ sengine::KeyState::Idle };
+                if (action == GLFW_PRESS) actionImpl = sengine::KeyState::Pressed;
+                else if (action == GLFW_RELEASE) actionImpl = sengine::KeyState::Released;
+                else return;
+                s_inputManagerPtr->ProcessKey(static_cast<sengine::KeyCode>(key), actionImpl, s_clock->CurrentTick());
+            }
+        });
+
+    glfwSetMouseButtonCallback(m_window, [](GLFWwindow*, int button, int action, int)
+        {
+            if (s_inputManagerPtr)
+            {
+                sengine::KeyState actionImpl{ sengine::KeyState::Idle };
+                if (action == GLFW_PRESS) actionImpl = sengine::KeyState::Pressed;
+                else if (action == GLFW_RELEASE) actionImpl = sengine::KeyState::Released;
+                else return;
+                s_inputManagerPtr->ProcessMouseButton(static_cast<sengine::MouseButton>(button), actionImpl, s_clock->CurrentTick());
+            }
+        });
+
+    glfwSetCharCallback(m_window, [](GLFWwindow*, unsigned int codepoint)
+        {
+            if (s_inputManagerPtr)
+                s_inputManagerPtr->ProcessChar(codepoint);
+        });
+
+    glfwSetCursorPosCallback(m_window, [](GLFWwindow*, double x, double y)
+        {
+            if (s_inputManagerPtr)
+                s_inputManagerPtr->ProcessMousePosition(x, y);
+        });
+
+    glfwSetScrollCallback(m_window, [](GLFWwindow*, double xoffset, double yoffset)
+        {
+            if (s_inputManagerPtr)
+                s_inputManagerPtr->ProcessScroll(xoffset, yoffset);
+        });
+}
+
+bool Window::ShouldClose() const
 {
     return glfwWindowShouldClose(m_window);
 }
 
-sshared::Window* sshared::Window::Create(const WindowConfig& config)
+Window* Window::Create(const WindowConfig& config)
 {
 
     // You can choose the API here if needed, e.g., DX12 or OpenGL
@@ -39,13 +105,13 @@ sshared::Window* sshared::Window::Create(const WindowConfig& config)
     return ret;
 }
 
-void sshared::Window::InitGlfw()
+void Window::InitGlfw()
 {
     if (!glfwInit())
         throw std::runtime_error("Failed to initialize GLFW");
 }
 
-void sshared::Window::TerminateGlfw()
+void Window::TerminateGlfw()
 {
     glfwTerminate();
 }

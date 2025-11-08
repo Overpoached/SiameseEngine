@@ -7,6 +7,7 @@
 //containers
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 //input output
 #include <iostream>
@@ -20,3 +21,6 @@
 
 //time
 #include <chrono>
+
+//others
+#include <cstdint>

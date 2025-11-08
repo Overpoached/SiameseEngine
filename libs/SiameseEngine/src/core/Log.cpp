@@ -8,7 +8,9 @@
 
 #include "core/Utils.h"
 
-sengine::Logger::Logger(const std::string& name, const std::string& filename)
+using namespace sengine;
+
+Logger::Logger(const std::string& name, const std::string& filename)
 {
 	m_logger = std::make_shared<spdlog::logger>(name);
 	m_logger->sinks().push_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>());
@@ -20,6 +22,6 @@ sengine::Logger::Logger(const std::string& name, const std::string& filename)
 		m_logger->sinks().push_back(std::make_shared<spdlog::sinks::basic_file_sink_mt>(logPath.string(), true));
 
 	}
-	m_logger->set_pattern("[%T] %n: %v%$");
+	m_logger->set_pattern("[%H:%M:%S.%e] %n: %v%$");
 	m_logger->set_level(spdlog::level::trace);
 }

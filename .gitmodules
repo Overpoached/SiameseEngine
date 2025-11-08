@@ -11,3 +11,9 @@
 [submodule "external/glfw"]
 	path = external/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "external/MathLib"]
+	path = external/MathLib
+	url = https://github.com/NVIDIA-RTX/MathLib.git
+[submodule "external/Observe"]
+	path = external/Observe
+	url = https://github.com/TheLartians/Observe.git

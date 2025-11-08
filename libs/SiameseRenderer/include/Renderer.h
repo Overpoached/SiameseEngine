@@ -12,8 +12,9 @@ namespace srenderer
 	{
 	public:
 		virtual void Init() override;
-		virtual void Run() override;
 		virtual void Release() override;
+		
+		virtual void Tick() override;
 
 	private:
 		sshared::Window* m_mainWindow;

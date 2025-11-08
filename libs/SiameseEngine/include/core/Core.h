@@ -11,3 +11,7 @@
 #else
 #define SE_ASSERT(expr, msg) ((void)0)
 #endif
+
+//#define CLOCK_MILLISECOND
+#define CLOCK_MICROSECOND
+//#define CLOCK_NANOSECOND

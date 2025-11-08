@@ -33,5 +33,7 @@ add_subdirectory(external/inifile_cpp)
 set_target_properties(inicpp PROPERTIES FOLDER "external")
 add_subdirectory(external/glfw)
 set_target_properties(glfw PROPERTIES FOLDER "external")
+add_subdirectory(external/MathLib)
+set_target_properties(MathLib PROPERTIES FOLDER "external")
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT SiameseRenderer)

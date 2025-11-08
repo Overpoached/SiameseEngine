@@ -1,6 +1,10 @@
 #pragma once
 
 class GLFWwindow;
+namespace sengine {
+	class InputManager;	
+	class Clock;	
+}
 namespace sshared
 {
 	struct WindowConfig
@@ -14,8 +18,10 @@ namespace sshared
 	public:
 		~Window();
 
-		void PollEvents() const;
+		void SetUpGlfwInputCallbacks(std::shared_ptr<sengine::InputManager> inputManagerPtr, std::shared_ptr<sengine::Clock>clockPtr);
 		bool ShouldClose() const;
+
+		void PollEvents() const;
 
 		WindowConfig m_config{};
 	private:

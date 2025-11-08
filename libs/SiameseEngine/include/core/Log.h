@@ -54,7 +54,12 @@ namespace sengine
 
     private:
         static inline std::shared_ptr<Logger> s_instance = nullptr;
-
-
     };
 }
+
+#define SENGINE_TRACE(...) sengine::LoggerService::Get()->Trace(__VA_ARGS__)
+#define SENGINE_DEBUG(...) sengine::LoggerService::Get()->Debug(__VA_ARGS__)
+#define SENGINE_INFO(...) sengine::LoggerService::Get()->Info(__VA_ARGS__)
+#define SENGINE_WARN(...) sengine::LoggerService::Get()->Warn(__VA_ARGS__)
+#define SENGINE_ERROR(...) sengine::LoggerService::Get()->Error(__VA_ARGS__)
+#define SENGINE_CRITICAL(...) sengine::LoggerService::Get()->Critical(__VA_ARGS__)
