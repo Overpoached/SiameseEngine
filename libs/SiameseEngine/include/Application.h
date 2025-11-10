@@ -5,6 +5,7 @@ namespace sengine
     class InputManager;
     class Logger;
     class Clock;
+    class DeviceManager;
     struct ApplicationConfig
     {
         std::string logFileName{ "siamese_engine" };
@@ -46,6 +47,7 @@ namespace sengine
         std::shared_ptr<Logger> m_engineLogger;
         std::shared_ptr<Clock> m_clock;
         std::shared_ptr<InputManager> m_inputManager;
+        std::shared_ptr<DeviceManager> m_deviceManager;
 
         //modules that needs to be called at the start of the frame
 

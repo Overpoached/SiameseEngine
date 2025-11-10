@@ -6,9 +6,6 @@
 
 #include <window/Window.h>
 
-//temp
-#include <input/InputManager.h>
-
 using namespace srenderer;
 
 Renderer::Application* sengine::CreateApplication()

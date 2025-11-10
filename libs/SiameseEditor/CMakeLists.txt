@@ -17,14 +17,16 @@ target_sources(SiameseEditor PRIVATE ${SRC_FILES} ${INCLUDE_FILES})
 #include dir
 target_include_directories(SiameseEditor PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-target_link_libraries(SiameseEditor PUBLIC SiameseEngine)
+target_link_libraries(SiameseEditor PUBLIC
+    SiameseEngine
+)
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/include PREFIX "Header Files" FILES ${INCLUDE_FILES})
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src PREFIX "Source Files" FILES ${SRC_FILES})
 
 #add the dependency in a diff folder
 get_target_property(SIAMESEENGINE_HEADERS SiameseEngine INTERFACE_SOURCES)
-source_group("Header Files/SiameseEngine" FILES ${SIAMESEENGINE_HEADERS})
+source_group(TREE ${CMAKE_SOURCE_DIR}/libs/SiameseEngine PREFIX "SiameseEngine" FILES ${SIAMESEENGINE_HEADERS})
 
 #cpp std
 target_compile_features(SiameseEditor PUBLIC cxx_std_20)

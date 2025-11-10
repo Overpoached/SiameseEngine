@@ -9,6 +9,7 @@
 #include "core/Clock.h"
 
 #include "input/InputManager.h"
+#include "graphics/DeviceManager.h"
 
 using namespace sengine;
 
@@ -29,6 +30,18 @@ void Application::Init()
 	m_inputManager = std::make_shared<InputManager>();
 	m_inputManager->SetRepeatDelay(m_config.inputConfig.repeatDelay);
 	m_inputManager->SetRepeatRate(m_config.inputConfig.repeatRate);
+	//create the graphic device
+	m_deviceManager = std::make_shared<DeviceManager>();
+	DeviceCreationParameters deviceCreationParams;
+	deviceCreationParams.enableDebugRuntime = true;
+	deviceCreationParams.enableNvrhiValidationLayer = true;
+	deviceCreationParams.swapChainBufferCount = 2;
+	//TODO: add in ability to create swap chain in editor, renderer, or launcher instead, after application init
+	deviceCreationParams.backBufferWidth = 1280;
+	deviceCreationParams.backBufferHeight = 720;
+	deviceCreationParams.vsyncEnabled = false;
+	if (m_deviceManager->Init(deviceCreationParams))
+		SENGINE_INFO("Device creation is successful");
 
 	//create modules
 }

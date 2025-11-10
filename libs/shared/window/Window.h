@@ -31,5 +31,6 @@ namespace sshared
 		static Window* Create(const WindowConfig& config);
 		static void InitGlfw();
 		static void TerminateGlfw();
+		static void GlfwErrorCallback(int _error, const char* description);
 	};
 }

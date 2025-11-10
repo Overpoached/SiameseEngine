@@ -17,3 +17,12 @@
 [submodule "external/Observe"]
 	path = external/Observe
 	url = https://github.com/TheLartians/Observe.git
+[submodule "external/entt"]
+	path = external/entt
+	url = https://github.com/skypjack/entt.git
+[submodule "external/tinygltf"]
+	path = external/tinygltf
+	url = https://github.com/syoyo/tinygltf.git
+[submodule "external/NVRHI"]
+	path = external/NVRHI
+	url = https://github.com/NVIDIA-RTX/NVRHI.git

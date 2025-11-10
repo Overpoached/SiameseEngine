@@ -109,9 +109,15 @@ void Window::InitGlfw()
 {
     if (!glfwInit())
         throw std::runtime_error("Failed to initialize GLFW");
+    glfwSetErrorCallback(GlfwErrorCallback);
 }
 
 void Window::TerminateGlfw()
 {
     glfwTerminate();
+}
+
+void sshared::Window::GlfwErrorCallback(int _error, const char* description)
+{
+    SENGINE_ERROR("GLFW Error ({0}): {1}", _error, description);
 }

@@ -24,6 +24,12 @@ target_include_directories(SiameseEngine
 target_link_libraries(SiameseEngine PUBLIC
     spdlog::spdlog
     inicpp
+    MathLib
+    EnTT
+    nvrhi
+    nvrhi_d3d12
+    DirectX-Headers
+    dxgi
 )
 target_link_libraries(SiameseEngine PRIVATE
     DbgHelp)
