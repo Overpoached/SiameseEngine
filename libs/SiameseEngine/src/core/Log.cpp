@@ -22,6 +22,6 @@ Logger::Logger(const std::string& name, const std::string& filename)
 		m_logger->sinks().push_back(std::make_shared<spdlog::sinks::basic_file_sink_mt>(logPath.string(), true));
 
 	}
-	m_logger->set_pattern("[%H:%M:%S.%e] %n: %v%$");
+	m_logger->set_pattern("[%H:%M:%S.%e][%L] %n: %v%$");
 	m_logger->set_level(spdlog::level::trace);
 }

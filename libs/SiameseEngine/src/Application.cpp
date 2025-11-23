@@ -4,12 +4,14 @@
 //inifile-cpp
 #include "inicpp.h"
 
+#include "core/Core.h"
 #include "core/Log.h"
 #include "core/CrashHandler.h"
 #include "core/Clock.h"
 
 #include "input/InputManager.h"
 #include "graphics/DeviceManager.h"
+#include "memory/SiameseAllocator.h"
 
 using namespace sengine;
 
@@ -25,13 +27,13 @@ void Application::Init()
 	//setup crash handler
 	CrashHandler::Install();
 	//create the clock
-	m_clock = std::make_shared<Clock>(this);
+	m_clock = SE_MAKE_SHARED_SYSTEM(Clock, Systems::Core, this);
 	//create the input manager
-	m_inputManager = std::make_shared<InputManager>();
+	m_inputManager = SE_MAKE_SHARED_SYSTEM(InputManager, Systems::Input);
 	m_inputManager->SetRepeatDelay(m_config.inputConfig.repeatDelay);
 	m_inputManager->SetRepeatRate(m_config.inputConfig.repeatRate);
 	//create the graphic device
-	m_deviceManager = std::make_shared<DeviceManager>();
+	m_deviceManager = SE_MAKE_SHARED_SYSTEM(DeviceManager, Systems::Render);
 	DeviceCreationParameters deviceCreationParams;
 	deviceCreationParams.enableDebugRuntime = true;
 	deviceCreationParams.enableNvrhiValidationLayer = true;
@@ -42,7 +44,6 @@ void Application::Init()
 	deviceCreationParams.vsyncEnabled = false;
 	if (m_deviceManager->Init(deviceCreationParams))
 		SENGINE_INFO("Device creation is successful");
-
 	//create modules
 }
 

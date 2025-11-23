@@ -54,6 +54,8 @@ namespace sengine
     private:
         double m_updateAccumulator{};
         double m_fixedUpdateAccumulator{};
+
+        //the list of applications to call their tick functions and etc, allow users to insert
     };
 
     Application* CreateApplication();

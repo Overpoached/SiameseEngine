@@ -1,6 +1,8 @@
 #pragma once
 #include "Application.h"
 
+#include "memory/MemoryManager.h"
+
 int main()
 {
 #ifdef SE_DEBUG
@@ -13,5 +15,7 @@ int main()
 	app->Release();
 	delete app;
 	
+	sengine::MemoryManager::Get().Release();
+
 	return 0;
 }

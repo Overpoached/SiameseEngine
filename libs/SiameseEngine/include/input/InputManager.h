@@ -1,6 +1,7 @@
 #pragma once
 
 #include "input/InputCodes.h"
+#include "memory/SiameseAllocator.h"
 
 namespace sengine
 {
@@ -40,17 +41,17 @@ namespace sengine
         double GetScrollY() const { return scrollY; }
 
         void ClearTextInput();
-        const std::u32string& GetTextInput() const { return textInput; }
+        const SE_BASIC_STRING(char32_t)& GetTextInput() const { return textInput; }
 
         void SetRepeatDelay(double delay) { repeatDelay = delay; }
         void SetRepeatRate(double rate) { repeatRate = rate; }
 
     private:
 
-        std::unordered_map<KeyCode, KeyInfo> keys;
-        std::unordered_map<MouseButton, KeyInfo> mouseButtons;
+		SE_UNORDERED_MAP_SYSTEM(KeyCode, KeyInfo, Systems::Input) keys;
+		SE_UNORDERED_MAP_SYSTEM(MouseButton, KeyInfo, Systems::Input) mouseButtons;
 
-        std::u32string textInput;
+        SE_BASIC_STRING(char32_t) textInput;
         double mouseX = 0.0, mouseY = 0.0;
         double scrollX = 0.0, scrollY = 0.0;
 

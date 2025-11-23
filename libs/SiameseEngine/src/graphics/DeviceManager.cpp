@@ -69,8 +69,8 @@ bool sengine::DeviceManager::CreateDevice(const DeviceCreationParameters& device
 
 		std::string name = GetAdapterName(aDesc);
 		bool isNvidia = IsNvDeviceID(aDesc.VendorId);
-		SENGINE_INFO("Adapter name:{}", name);
-		SENGINE_INFO("Is nvidia:{}", isNvidia);
+		SENGINE_INFO("Adapter name: {}", name);
+		SENGINE_INFO("Is nvidia: {}", isNvidia);
 	}
 
 	HRESULT hr = D3D12CreateDevice(

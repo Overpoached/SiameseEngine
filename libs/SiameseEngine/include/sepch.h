@@ -1,5 +1,6 @@
 //memory
 #include <memory>
+#include <limits>
 
 //filesystem
 #include <filesystem>
