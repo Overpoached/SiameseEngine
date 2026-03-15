@@ -8,6 +8,8 @@
 //containers
 #include <string>
 #include <vector>
+#include <map>
+#include <list>
 #include <unordered_map>
 
 //input output
@@ -25,3 +27,15 @@
 
 //others
 #include <cstdint>
+
+//windows
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#include <windows.h>
+#include <process.h>
+#define getpid _getpid
+#else
+#include <unistd.h>
+#include <limits.h>
+#endif

@@ -19,8 +19,8 @@ void Renderer::Init()
 	sengine::Application::Init();
 
 	//create and setup the glfw window
-	sshared::Window::InitGlfw();
-	m_mainWindow = sshared::Window::Create({ "SiameseRenderer", 1280, 720 });
+	sengine::Window::InitGlfw();
+	m_mainWindow = sengine::Window::Create({ "SiameseRenderer", 1280, 720 });
 	m_mainWindow->SetUpGlfwInputCallbacks(m_inputManager, m_clock);
 }
 
@@ -38,5 +38,5 @@ void srenderer::Renderer::Tick()
 void Renderer::Release()
 {
 	delete m_mainWindow;
-	sshared::Window::TerminateGlfw();
+	sengine::Window::TerminateGlfw();
 }

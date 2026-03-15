@@ -6,7 +6,7 @@
 
 void sengine::InputManager::Update(double currentTime)
 {
-    for (auto& [key, info] : keys)
+    for (auto& [key, info] : m_keys)
     {
         switch (info.state)
         {
@@ -29,7 +29,7 @@ void sengine::InputManager::Update(double currentTime)
         case KeyState::Held:
         {
             //signal held 
-            if ((currentTime - info.lastPressTime) > repeatDelay)
+            if ((currentTime - info.lastPressTime) > m_repeatDelay)
             {
                 // first repeat trigger 
                 info.lastPressTime = currentTime;
@@ -47,7 +47,7 @@ void sengine::InputManager::Update(double currentTime)
         case KeyState::Repeating:
         {
             //signal held 
-            if ((currentTime - info.lastPressTime) > repeatRate)
+            if ((currentTime - info.lastPressTime) > m_repeatRate)
             {
                 info.lastPressTime = currentTime;
                 info.state = KeyState::Repeat;
@@ -70,7 +70,7 @@ void sengine::InputManager::Update(double currentTime)
 
 void sengine::InputManager::ProcessKey(KeyCode key, KeyState action, double currentTime)
 {
-    auto& info = keys[key];
+    auto& info = m_keys[key];
     if (action == KeyState::Pressed)
     {
         info.state = KeyState::Pressed;
@@ -86,7 +86,7 @@ void sengine::InputManager::ProcessKey(KeyCode key, KeyState action, double curr
 
 void sengine::InputManager::ProcessMouseButton(MouseButton button, KeyState action, double currentTime)
 {
-    auto& info = mouseButtons[button];
+    auto& info = m_mouseButtons[button];
     if (action == KeyState::Pressed)
     {
         info.state = KeyState::Pressed;
@@ -100,64 +100,64 @@ void sengine::InputManager::ProcessMouseButton(MouseButton button, KeyState acti
 
 void sengine::InputManager::ProcessChar(unsigned int codepoint)
 {
-    textInput.push_back(static_cast<char32_t>(codepoint));
+    m_textInput.push_back(static_cast<char32_t>(codepoint));
 }
 
 void sengine::InputManager::ProcessMousePosition(double x, double y)
 {
-    mouseX = x;
-    mouseY = y;
+    m_mouseX = x;
+    m_mouseY = y;
 }
 
 void sengine::InputManager::ProcessScroll(double xoffset, double yoffset)
 {
-    scrollX = xoffset;
-    scrollY = yoffset;
+    m_scrollX = xoffset;
+    m_scrollY = yoffset;
 }
 
 bool sengine::InputManager::IsKeyDown(KeyCode key) const
 {
-    auto it = keys.find(key);
-    return it != keys.end() && (it->second.state != KeyState::Idle && it->second.state != KeyState::Released);
+    auto it = m_keys.find(key);
+    return it != m_keys.end() && (it->second.state != KeyState::Idle && it->second.state != KeyState::Released);
 }
 
 bool sengine::InputManager::IsKeyRepeat(KeyCode key) const
 {
-    auto it = keys.find(key);
-    return it != keys.end() && it->second.state == KeyState::Repeat;
+    auto it = m_keys.find(key);
+    return it != m_keys.end() && it->second.state == KeyState::Repeat;
 }
 
 bool sengine::InputManager::IsKeyPressed(KeyCode key) const
 {
-    auto it = keys.find(key);
-    return it != keys.end() && it->second.state == KeyState::Pressed;
+    auto it = m_keys.find(key);
+    return it != m_keys.end() && it->second.state == KeyState::Pressed;
 }
 
 bool sengine::InputManager::IsKeyReleased(KeyCode key) const
 {
-    auto it = keys.find(key);
-    return it != keys.end() && it->second.state == KeyState::Released;
+    auto it = m_keys.find(key);
+    return it != m_keys.end() && it->second.state == KeyState::Released;
 }
 
 bool sengine::InputManager::IsMouseButtonDown(MouseButton button) const
 {
-    auto it = mouseButtons.find(button);
-    return it != mouseButtons.end() && (it->second.state == KeyState::Pressed || it->second.state == KeyState::Held);
+    auto it = m_mouseButtons.find(button);
+    return it != m_mouseButtons.end() && (it->second.state == KeyState::Pressed || it->second.state == KeyState::Held);
 }
 
 bool sengine::InputManager::IsMouseButtonPressed(MouseButton button) const
 {
-    auto it = mouseButtons.find(button);
-    return it != mouseButtons.end() && it->second.state == KeyState::Pressed;
+    auto it = m_mouseButtons.find(button);
+    return it != m_mouseButtons.end() && it->second.state == KeyState::Pressed;
 }
 
 bool sengine::InputManager::IsMouseButtonReleased(MouseButton button) const
 {
-    auto it = mouseButtons.find(button);
-    return it != mouseButtons.end() && it->second.state == KeyState::Released;
+    auto it = m_mouseButtons.find(button);
+    return it != m_mouseButtons.end() && it->second.state == KeyState::Released;
 }
 
 void sengine::InputManager::ClearTextInput()
 {
-    textInput.clear();
+    m_textInput.clear();
 }

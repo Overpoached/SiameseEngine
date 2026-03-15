@@ -23,12 +23,10 @@ target_sources(SiameseRenderer PRIVATE
 #include dir
 target_include_directories(SiameseRenderer PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/libs/shared
 )
 
 target_link_libraries(SiameseRenderer PRIVATE
     SiameseEngine
-    glfw
     tinygltf
 )
 

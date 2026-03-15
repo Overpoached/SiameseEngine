@@ -26,3 +26,6 @@
 [submodule "external/NVRHI"]
 	path = external/NVRHI
 	url = https://github.com/NVIDIA-RTX/NVRHI.git
+[submodule "external/taskflow"]
+	path = external/taskflow
+	url = https://github.com/taskflow/taskflow.git

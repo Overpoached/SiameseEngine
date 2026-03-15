@@ -66,14 +66,48 @@ namespace sengine
 		_NODISCARD _CONSTEXPR20 bool operator==(const SiameseAllocator<_Ty>&, const SiameseAllocator<_Other>&) noexcept {
 		return std::is_same_v<_Ty, _Other>;
 	}
+
+	//smart pointers
+	template<typename T>
+	using SSharedPtr = std::shared_ptr<T>;
+	template<typename T, Systems sys = Systems::Undefined, typename... Args>
+	inline SSharedPtr<T> SMakeShared(Args&&... args) { return std::allocate_shared<T>(SiameseAllocator<T, sys>{}, std::forward<Args>(args)...); }
+	template<typename T, Systems sys>
+	struct SUniquePtrDeleter
+	{
+		void operator()(T* ptr) const 
+		{
+			if (ptr) 
+			{
+				ptr->~T();
+				MemoryManager::Get().Deallocate<T, sys>(ptr);
+			}
+		}
+	};
+	template<typename T, Systems sys>
+	using SUniquePtr = std::unique_ptr<T, SUniquePtrDeleter<T, sys>>;
+	template<typename T, Systems sys = Systems::Undefined, typename... Args>
+	inline SUniquePtr<T, sys> SMakeUnique(Args&&... args)
+	{
+		void* mem = MemoryManager::Get().Allocate<T, sys>();
+		T* ptr = new (mem) T(std::forward<Args>(args)...);
+		return SUniquePtr<T>(ptr, SUniquePtrDeleter<T>());
+	}
+
+	//containers
+	template<Systems system = Systems::Undefined>
+	using SString = std::basic_string<char, std::char_traits<char>, sengine::SiameseAllocator<char, system>>;
+	template<Systems system = Systems::Undefined>
+	using SStringStream = std::basic_stringstream<char, std::char_traits<char>, sengine::SiameseAllocator<char, system>>;
+	template<Systems system = Systems::Undefined>
+	using SOStringStream = std::basic_ostringstream<char, std::char_traits<char>, sengine::SiameseAllocator<char, system>>;
+	template<typename KeyType, typename ValueType, Systems system = Systems::Undefined>
+	using SMap = std::map<KeyType, ValueType, std::less<KeyType>, sengine::SiameseAllocator<std::pair<const KeyType, ValueType>, system>>;
+	template<typename KeyType, typename ValueType, Systems system = Systems::Undefined>
+	using SUnorderedMap = std::unordered_map<KeyType, ValueType, std::hash<KeyType>, std::equal_to<KeyType>, sengine::SiameseAllocator<std::pair<const KeyType, ValueType>, system>>;
+	template<typename T, Systems system = Systems::Undefined>
+	using SVector = std::vector<T, sengine::SiameseAllocator<T, system>>;
+	template<typename T, Systems system = Systems::Undefined>
+	using SList = std::list<T, sengine::SiameseAllocator<T, system>>;
 }
 
-//helper macros for creating stuff with my allocator
-#define SE_MAKE_SHARED(type, ...) std::allocate_shared<type>(sengine::SiameseAllocator<type>{}, __VA_ARGS__)
-#define SE_MAKE_SHARED_SYSTEM(type, system, ...) std::allocate_shared<type>(sengine::SiameseAllocator<type, system>{}, __VA_ARGS__)
-
-#define SE_UNORDERED_MAP(keyType, valueType) std::unordered_map<keyType, valueType, std::hash<keyType>, std::equal_to<keyType>, sengine::SiameseAllocator<std::pair<const keyType, valueType>>>
-#define SE_UNORDERED_MAP_SYSTEM(keyType, valueType, system) std::unordered_map<keyType, valueType, std::hash<keyType>, std::equal_to<keyType>, sengine::SiameseAllocator<std::pair<const keyType, valueType>, system>>
-
-#define SE_BASIC_STRING(charType) std::basic_string<charType, std::char_traits<charType>, sengine::SiameseAllocator<charType>>
-#define SE_BASIC_STRING_SYSTEM(charType, system) std::basic_string<charType, std::char_traits<charType>, sengine::SiameseAllocator<charType, system>>

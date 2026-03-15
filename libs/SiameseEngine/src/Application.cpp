@@ -19,21 +19,21 @@ void Application::Init()
 {
 	//load the config file
 	LoadConfig(CONFIG_PATH);
-	//initialize the logger
-	m_engineLogger = std::make_shared<Logger>("SENGINE", m_config.logFileName);
+	//initialize the logger, cannot be in memory arena as arena needs logging, headers will include each other. TODO: fix this
+	m_engineLogger = std::make_shared<Logger>("SENGINE", m_config.logFileName.c_str());
 	//set the logger service to use the engine logger as well for areas where access from global scope is needed
 	LoggerService::Register(m_engineLogger);
     m_engineLogger->Info("Engine logger initialized");
 	//setup crash handler
 	CrashHandler::Install();
 	//create the clock
-	m_clock = SE_MAKE_SHARED_SYSTEM(Clock, Systems::Core, this);
+	m_clock = SMakeShared<Clock, Systems::Core>(this);
 	//create the input manager
-	m_inputManager = SE_MAKE_SHARED_SYSTEM(InputManager, Systems::Input);
+	m_inputManager = SMakeShared<InputManager, Systems::Input>();
 	m_inputManager->SetRepeatDelay(m_config.inputConfig.repeatDelay);
 	m_inputManager->SetRepeatRate(m_config.inputConfig.repeatRate);
 	//create the graphic device
-	m_deviceManager = SE_MAKE_SHARED_SYSTEM(DeviceManager, Systems::Render);
+	m_deviceManager = SMakeShared<DeviceManager, Systems::Render>();
 	DeviceCreationParameters deviceCreationParams;
 	deviceCreationParams.enableDebugRuntime = true;
 	deviceCreationParams.enableNvrhiValidationLayer = true;

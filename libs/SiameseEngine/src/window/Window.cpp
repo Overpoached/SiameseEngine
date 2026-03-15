@@ -1,6 +1,6 @@
 #include "sepch.h"
 
-#include "Window.h"
+#include "window/Window.h"
 
 #include <GLFW/glfw3.h>
 
@@ -8,7 +8,7 @@
 #include "input/InputManager.h"
 #include "core/Clock.h"
 
-using namespace sshared;
+using namespace sengine;
 
 static std::shared_ptr<sengine::InputManager> s_inputManagerPtr = nullptr;
 static std::shared_ptr<sengine::Clock> s_clock = nullptr;
@@ -117,7 +117,7 @@ void Window::TerminateGlfw()
     glfwTerminate();
 }
 
-void sshared::Window::GlfwErrorCallback(int _error, const char* description)
+void sengine::Window::GlfwErrorCallback(int _error, const char* description)
 {
     SENGINE_ERROR("GLFW Error ({0}): {1}", _error, description);
 }

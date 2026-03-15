@@ -1,5 +1,7 @@
 #pragma once
 
+#include "memory/SiameseAllocator.h"
+
 namespace sengine
 {
     class InputManager;
@@ -8,7 +10,7 @@ namespace sengine
     class DeviceManager;
     struct ApplicationConfig
     {
-        std::string logFileName{ "siamese_engine" };
+        SString<Systems::Core> logFileName{ "siamese_engine" };
         double targetFrameRate{ 60 };
         double targetFrameTime{ 1.0 / 60.0 };
         double targetFixedFrameRate{ 60.0 };
@@ -45,9 +47,9 @@ namespace sengine
         ApplicationConfig m_config;
         bool m_running{ true };
         std::shared_ptr<Logger> m_engineLogger;
-        std::shared_ptr<Clock> m_clock;
-        std::shared_ptr<InputManager> m_inputManager;
-        std::shared_ptr<DeviceManager> m_deviceManager;
+        SSharedPtr<Clock> m_clock;
+        SSharedPtr<InputManager> m_inputManager;
+        SSharedPtr<DeviceManager> m_deviceManager;
 
         //modules that needs to be called at the start of the frame
 

@@ -10,6 +10,7 @@ namespace sengine
 {
 #define BASE_SYSTEM_LIST(X)\
 	X(Undefined)	\
+	X(General)		\
 	X(Core)			\
 	X(Window)		\
 	X(Input)		\

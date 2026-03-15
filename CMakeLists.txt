@@ -10,6 +10,11 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 
 add_subdirectory(external/inifile_cpp)
 
+set(TF_BUILD_TESTS OFF CACHE INTERNAL "" FORCE)
+set(TF_BUILD_EXAMPLES OFF CACHE INTERNAL "" FORCE)
+add_subdirectory(external/taskflow)
+set_target_properties(Taskflow PROPERTIES FOLDER "external/taskflow")
+
 add_subdirectory(external/spdlog)
 set_target_properties(spdlog PROPERTIES FOLDER "external/spdlog")
 

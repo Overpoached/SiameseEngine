@@ -35,27 +35,26 @@ namespace sengine
         bool IsMouseButtonPressed(MouseButton button) const;
         bool IsMouseButtonReleased(MouseButton button) const;
 
-        double GetMouseX() const { return mouseX; }
-        double GetMouseY() const { return mouseY; }
-        double GetScrollX() const { return scrollX; }
-        double GetScrollY() const { return scrollY; }
+        double GetMouseX() const { return m_mouseX; }
+        double GetMouseY() const { return m_mouseY; }
+        double GetScrollX() const { return m_scrollX; }
+        double GetScrollY() const { return m_scrollY; }
 
         void ClearTextInput();
-        const SE_BASIC_STRING(char32_t)& GetTextInput() const { return textInput; }
+        const SString<Systems::Input>& GetTextInput() const { return m_textInput; }
 
-        void SetRepeatDelay(double delay) { repeatDelay = delay; }
-        void SetRepeatRate(double rate) { repeatRate = rate; }
+        void SetRepeatDelay(double delay) { m_repeatDelay = delay; }
+        void SetRepeatRate(double rate) { m_repeatRate = rate; }
 
     private:
+		SUnorderedMap<KeyCode, KeyInfo, Systems::Input> m_keys;
+        SUnorderedMap<MouseButton, KeyInfo, Systems::Input> m_mouseButtons;
 
-		SE_UNORDERED_MAP_SYSTEM(KeyCode, KeyInfo, Systems::Input) keys;
-		SE_UNORDERED_MAP_SYSTEM(MouseButton, KeyInfo, Systems::Input) mouseButtons;
+        SString<Systems::Input> m_textInput;
+        double m_mouseX = 0.0, m_mouseY = 0.0;
+        double m_scrollX = 0.0, m_scrollY = 0.0;
 
-        SE_BASIC_STRING(char32_t) textInput;
-        double mouseX = 0.0, mouseY = 0.0;
-        double scrollX = 0.0, scrollY = 0.0;
-
-        double repeatDelay = 0.5; // seconds before repeat
-        double repeatRate = 0.05; // seconds between repeats
+        double m_repeatDelay = 0.5; // seconds before repeat
+        double m_repeatRate = 0.05; // seconds between repeats
     };
 }

@@ -5,6 +5,7 @@
 
 #include "core/Utils.h"
 #include "core/Log.h"
+#include "memory/SiameseAllocator.h"
 
 namespace sengine
 {
@@ -12,7 +13,7 @@ namespace sengine
 	{
 		inline static void WriteDump(EXCEPTION_POINTERS* pExceptionInfo)
 		{
-			std::string filename = "logs/siamese_crash_" + GetTimestamp() + ".dmp";
+			SString<Systems::Core> filename = SString<Systems::Core>("logs/siamese_crash_") + GetTimestamp().c_str() + ".dmp";
 			std::filesystem::create_directories("logs");
 
 			HANDLE hFile = CreateFileA(filename.c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -26,6 +27,7 @@ namespace sengine
 			MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &dumpInfo, nullptr, nullptr);
 			CloseHandle(hFile);
 		}
+
 		inline static LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* pExceptionInfo)
 		{
 			WriteDump(pExceptionInfo);
@@ -41,6 +43,7 @@ namespace sengine
 
 			return EXCEPTION_EXECUTE_HANDLER;
 		}
+
 		inline static void Install()
 		{
 			SetUnhandledExceptionFilter(&ExceptionFilter);

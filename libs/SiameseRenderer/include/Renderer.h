@@ -2,7 +2,7 @@
 
 #include <Application.h>
 
-namespace sshared
+namespace sengine
 {
 	class Window;
 }
@@ -17,6 +17,6 @@ namespace srenderer
 		virtual void Tick() override;
 
 	private:
-		sshared::Window* m_mainWindow;
+		sengine::Window* m_mainWindow;
 	};
 }

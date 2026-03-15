@@ -1,12 +1,10 @@
 #pragma once
 
 class GLFWwindow;
-namespace sengine {
-	class InputManager;	
-	class Clock;	
-}
-namespace sshared
+namespace sengine
 {
+	class InputManager;
+	class Clock;
 	struct WindowConfig
 	{
 		std::string title{ "Window" };

@@ -30,6 +30,7 @@ target_link_libraries(SiameseEngine PUBLIC
     nvrhi_d3d12
     DirectX-Headers
     dxgi
+    glfw
 )
 target_link_libraries(SiameseEngine PRIVATE
     DbgHelp)
