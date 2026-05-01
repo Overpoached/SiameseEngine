@@ -1,10 +1,14 @@
 #pragma once
 
-template<typename T>
-struct Component
+namespace sengine
 {
-	T current{};
-	T next{};
+	template<typename T>
+	struct Component
+	{
+		T current{};
+		//TODO: use a double buffered ecs system for multi threading
+		T next{};
 
-	void Swap() noexcept;
-};
+		void Swap() noexcept;
+	};
+}

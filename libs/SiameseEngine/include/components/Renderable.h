@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Renderable
+namespace sengine
 {
 	struct Renderable
 	{

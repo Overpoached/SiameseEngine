@@ -10,6 +10,8 @@
 
 namespace sengine
 {
+	static nvrhi::Format DXGItoNVRHI(DXGI_FORMAT format);
+
 	struct AdapterInfo
 	{
 		std::string name;
@@ -18,6 +20,7 @@ namespace sengine
 		uint64_t dedicatedVideoMemory = 0;
 		nvrhi::RefCountPtr<IDXGIAdapter> dxgiAdapter;
 	};
+
 	struct DefaultMessageCallback : public nvrhi::IMessageCallback
 	{
 		static DefaultMessageCallback& GetInstance() { return s_Instance; }
@@ -26,25 +29,12 @@ namespace sengine
 
 		static DefaultMessageCallback s_Instance;
 	};
+
 	struct DeviceCreationParameters
 	{
-		bool enableDebugRuntime = false;
 		bool headlessDevice = false;
-		bool startMaximized = false;
-		bool startFullscreen = false;
-		bool allowModeSwitch = true;
-		int windowPosX = -1;            // -1 means use default placement
-		int windowPosY = -1;
-		uint32_t backBufferWidth = 1280;
-		uint32_t backBufferHeight = 720;
-		uint32_t refreshRate = 0;
-		uint32_t swapChainBufferCount = 3;
-		nvrhi::Format swapChainFormat = nvrhi::Format::SRGBA8_UNORM;
-		uint32_t swapChainSampleCount = 1;
-		uint32_t swapChainSampleQuality = 0;
-		uint32_t maxFramesInFlight = 2;
+		bool enableDebugRuntime = false;
 		bool enableNvrhiValidationLayer = false;
-		bool vsyncEnabled = false;
 		bool enableRayTracingExtensions = false; // for vulkan
 		bool enableComputeQueue = false;
 		bool enableCopyQueue = false;
@@ -65,7 +55,6 @@ namespace sengine
 		// and respond to DPI scale factor changes by resizing the backbuffer explicitly
 		bool enablePerMonitorDPI = false;
 
-		DXGI_USAGE swapChainUsage = DXGI_USAGE_SHADER_INPUT | DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_12_2;
 	};
 
@@ -73,8 +62,10 @@ namespace sengine
 	{
 	public:
 		bool Init(const DeviceCreationParameters& deviceCreationParams);
+		bool MoveWindowOntoAdapter(RECT& rect);
 
-		std::string GetAdapterName(DXGI_ADAPTER_DESC const& desc)
+		//getters
+		std::string GetAdapterName(DXGI_ADAPTER_DESC const& desc) const
 		{
 			size_t length = wcsnlen(desc.Description, _countof(desc.Description));
 			std::string name;
@@ -86,10 +77,19 @@ namespace sengine
 		{
 			return m_rendererString.c_str();
 		}
-		nvrhi::IDevice* GetDevice() const
+		bool GetTearingSupported() const
+		{
+			return m_tearingSupported;
+		}
+
+		nvrhi::IDevice* GetDevice()
 		{
 			return m_nvrhiDevice;
 		}
+
+		//some helper tools to create stuff
+		bool CreateSwapChain(HWND hWnd, DXGI_SWAP_CHAIN_DESC1& swapChainDesc, DXGI_SWAP_CHAIN_FULLSCREEN_DESC& fullscreenDesc, nvrhi::RefCountPtr<IDXGISwapChain3> swapChainOut, std::vector<nvrhi::RefCountPtr<ID3D12Resource>>& swapChainBuffersOut, std::vector<nvrhi::TextureHandle>& rhiBuffersOut);
+		bool CreateFrameFench(nvrhi::RefCountPtr<ID3D12Fence>& frameFenceOut);
 
 	private:
 		DeviceCreationParameters m_deviceCreationParams{};
@@ -98,25 +98,15 @@ namespace sengine
 		nvrhi::RefCountPtr<ID3D12CommandQueue> m_graphicsQueue;
 		nvrhi::RefCountPtr<ID3D12CommandQueue> m_computeQueue;
 		nvrhi::RefCountPtr<ID3D12CommandQueue> m_copyQueue;
-		nvrhi::RefCountPtr<IDXGISwapChain3> m_swapChain;
-		DXGI_SWAP_CHAIN_DESC1 m_swapChainDesc{};
-		DXGI_SWAP_CHAIN_FULLSCREEN_DESC m_fullscreenDesc{};
 		nvrhi::RefCountPtr<IDXGIAdapter> m_dxgiAdapter;
-		HWND m_hWnd{ nullptr };
-		bool m_tearingSupported{ false };
 		
-		std::vector<std::shared_ptr<ID3D12Resource>> m_swapChainBuffers;
-		std::vector<nvrhi::TextureHandle> m_rhiSwapChainBuffers;
-		nvrhi::RefCountPtr<ID3D12Fence> m_frameFence;
-		std::vector<HANDLE> m_frameFenceEvents;
-
-		uint64_t m_frameCount{ 1 };
-
 		nvrhi::DeviceHandle m_nvrhiDevice;
 		std::string m_rendererString;
 
+		//some capabilities of the device
+		bool m_tearingSupported{};
+
 		bool CreateDevice(const DeviceCreationParameters& deviceCreationParams);
-		bool CreateSwapChain();
 		bool CreateRenderTargets();
 		void ResizeSwapChain();
 		void ReleaseRenderTargets();

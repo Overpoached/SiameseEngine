@@ -37,11 +37,6 @@ void Application::Init()
 	DeviceCreationParameters deviceCreationParams;
 	deviceCreationParams.enableDebugRuntime = true;
 	deviceCreationParams.enableNvrhiValidationLayer = true;
-	deviceCreationParams.swapChainBufferCount = 2;
-	//TODO: add in ability to create swap chain in editor, renderer, or launcher instead, after application init
-	deviceCreationParams.backBufferWidth = 1280;
-	deviceCreationParams.backBufferHeight = 720;
-	deviceCreationParams.vsyncEnabled = false;
 	if (m_deviceManager->Init(deviceCreationParams))
 		SENGINE_INFO("Device creation is successful");
 	//create modules

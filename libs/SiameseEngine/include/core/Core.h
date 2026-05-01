@@ -57,6 +57,7 @@ namespace sengine
 
 #define UNREFERENCED_PARAMETER(P) (P)
 #define NOMINMAX
+#define HR_RETURN(hr) do { if(FAILED(hr)) return false; } while (0)
 
 //#define CLOCK_MILLISECOND
 #define CLOCK_MICROSECOND

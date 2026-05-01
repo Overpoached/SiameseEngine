@@ -20,8 +20,11 @@ void Renderer::Init()
 
 	//create and setup the glfw window
 	sengine::Window::InitGlfw();
+	//creating the window creates the swap chain etc
 	m_mainWindow = sengine::Window::Create({ "SiameseRenderer", 1280, 720 });
 	m_mainWindow->SetUpGlfwInputCallbacks(m_inputManager, m_clock);
+	m_mainWindow->CreateSwapChain(m_deviceManager);
+	//create and add all the renderpasses
 }
 
 void srenderer::Renderer::Tick()
